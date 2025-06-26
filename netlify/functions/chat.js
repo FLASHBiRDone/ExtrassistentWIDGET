@@ -5,7 +5,7 @@ const openai = new OpenAI({
 });
 
 const assistantId = 'asst_xH9oYbV2GEzxpL7SmX3pfBQq';
-const MAX_WAIT_SECONDS = 9;
+const MAX_WAIT_SECONDS = 24;
 
 exports.handler = async (event, context) => {
     if (event.httpMethod !== 'POST') {
