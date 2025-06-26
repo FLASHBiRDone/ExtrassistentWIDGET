@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
         chatInput.value = '';
 
         try {
-            const response = await fetch('/.netlify/functions/chat', {
+            const response = await fetch('/api/chat', {
                 method: 'POST',
                 body: JSON.stringify({ message, threadId }),
                 headers: { 'Content-Type': 'application/json' }
