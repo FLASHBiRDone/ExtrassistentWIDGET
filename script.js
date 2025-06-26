@@ -8,12 +8,60 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let threadId = null;
 
-    const addMessage = (message, sender) => {
+    const addMessage = (message, sender, id = null) => {
         const li = document.createElement('li');
+        if (id) {
+            li.id = id;
+        }
         li.textContent = message;
         li.classList.add(sender === 'user' ? 'user-message' : 'assistant-message');
+        if (sender === 'typing') {
+            li.classList.add('typing-indicator');
+        }
         chatMessages.appendChild(li);
         chatMessages.scrollTop = chatMessages.scrollHeight;
+        return li;
+    };
+
+    const pollForStatus = async (threadId, runId) => {
+        const typingIndicator = addMessage("Assistenten skriver...", 'typing', 'typing-indicator');
+
+        const interval = setInterval(async () => {
+            try {
+                const response = await fetch('/api/status', {
+                    method: 'POST',
+                    body: JSON.stringify({ threadId, runId }),
+                    headers: { 'Content-Type': 'application/json' }
+                });
+
+                if (!response.ok) {
+                    // Stop polling on error
+                    clearInterval(interval);
+                    typingIndicator.remove();
+                    const errorText = await response.text();
+                    addMessage(`Error checking status: ${errorText}`, 'assistant');
+                    return;
+                }
+
+                const data = await response.json();
+
+                if (data.status === 'completed') {
+                    clearInterval(interval);
+                    typingIndicator.remove();
+                    addMessage(data.reply, 'assistant');
+                } else if (data.status === 'failed') {
+                    clearInterval(interval);
+                    typingIndicator.remove();
+                    addMessage(data.error || 'An error occurred.', 'assistant');
+                }
+                // If status is 'in_progress', do nothing and let the polling continue.
+
+            } catch (error) {
+                clearInterval(interval);
+                typingIndicator.remove();
+                addMessage(`Error: ${error.message}`, 'assistant');
+            }
+        }, 2000); // Poll every 2 seconds
     };
 
     const sendMessage = async () => {
@@ -24,6 +72,7 @@ document.addEventListener('DOMContentLoaded', () => {
         chatInput.value = '';
 
         try {
+            // This now just starts the run
             const response = await fetch('/api/chat', {
                 method: 'POST',
                 body: JSON.stringify({ message, threadId }),
@@ -32,27 +81,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (!response.ok) {
                 const errorText = await response.text();
-                try {
-                    // Try to parse it as JSON
-                    const errorData = JSON.parse(errorText);
-                    throw new Error(errorData.error || 'An unknown error occurred.');
-                } catch (e) {
-                    // If it's not JSON, use the raw text
-                    throw new Error(errorText || 'An unknown error occurred.');
-                }
+                throw new Error(errorText || 'Failed to start chat.');
             }
 
             const data = await response.json();
+            threadId = data.threadId; // Update threadId for the session
+            pollForStatus(data.threadId, data.runId);
 
-            if (data.threadId) {
-                threadId = data.threadId;
-            }
-
-            if (data.reply) {
-                addMessage(data.reply, 'assistant');
-            } else {
-                addMessage(data.error || 'The assistant did not provide a response.', 'assistant');
-            }
         } catch (error) {
             console.error('Error sending message:', error);
             addMessage(`Error: ${error.message}`, 'assistant');

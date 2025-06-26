@@ -84,6 +84,14 @@ body {
     border-bottom-left-radius: 4px;
 }
 
+#chat-messages .typing-indicator {
+    background-color: #f0f0f0;
+    color: #999;
+    align-self: flex-start;
+    font-style: italic;
+    border-bottom-left-radius: 4px;
+}
+
 #chat-footer {
     padding: 15px;
     border-top: 1px solid #e0e0e0;
