@@ -7,13 +7,20 @@ document.addEventListener('DOMContentLoaded', () => {
     const chatHeader = document.getElementById('chat-header');
 
     let threadId = null;
+    const markdownConverter = new showdown.Converter();
 
     const addMessage = (message, sender, id = null) => {
         const li = document.createElement('li');
         if (id) {
             li.id = id;
         }
-        li.textContent = message;
+        
+        if (sender === 'assistant') {
+            li.innerHTML = markdownConverter.makeHtml(message);
+        } else {
+            li.textContent = message;
+        }
+
         li.classList.add(sender === 'user' ? 'user-message' : 'assistant-message');
         if (sender === 'typing') {
             li.classList.add('typing-indicator');
