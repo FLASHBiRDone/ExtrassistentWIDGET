@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
             li.classList.add('typing-indicator');
         }
         chatMessages.appendChild(li);
-        chatMessages.scrollTop = chatMessages.scrollHeight;
+        li.scrollIntoView({ behavior: 'smooth' });
         return li;
     };
 
