@@ -29,6 +29,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const data = await response.json();
 
+            if (!response.ok) {
+                throw new Error(data.error || 'An unknown error occurred.');
+            }
+
             if (data.threadId) {
                 threadId = data.threadId;
             }
@@ -36,11 +40,11 @@ document.addEventListener('DOMContentLoaded', () => {
             if (data.reply) {
                 addMessage(data.reply, 'assistant');
             } else {
-                addMessage('An error occurred.', 'assistant');
+                addMessage(data.error || 'The assistant did not provide a response.', 'assistant');
             }
         } catch (error) {
             console.error('Error sending message:', error);
-            addMessage('An error occurred while connecting to the assistant.', 'assistant');
+            addMessage(`Error: ${error.message}`, 'assistant');
         }
     };
 
