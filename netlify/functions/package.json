@@ -1,0 +1,15 @@
+{
+  "name": "chat-function",
+  "version": "1.0.0",
+  "description": "Dependencies for the chat function",
+  "main": "chat.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "openai": "^4.24.7"
+  }
+}
