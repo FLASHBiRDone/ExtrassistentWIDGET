@@ -2,6 +2,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const chatInput = document.getElementById('chat-input');
     const chatSend = document.getElementById('chat-send');
     const chatMessages = document.getElementById('chat-messages');
+    const chatWidget = document.getElementById('chat-widget');
+    const chatMinimize = document.getElementById('chat-minimize');
+    const chatHeader = document.getElementById('chat-header');
 
     let threadId = null;
 
@@ -64,4 +67,20 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     addMessage("Hei, gi meg postnummeret ditt så kan jeg hjelpe meg med tips, triks og tilbud :)", "assistant");
+
+    const toggleMinimize = () => {
+        chatWidget.classList.toggle('minimized');
+        chatMinimize.textContent = chatWidget.classList.contains('minimized') ? '+' : '-';
+    };
+
+    chatMinimize.addEventListener('click', (e) => {
+        e.stopPropagation(); // Prevent header click from firing
+        toggleMinimize();
+    });
+
+    chatHeader.addEventListener('click', () => {
+        if (chatWidget.classList.contains('minimized')) {
+            toggleMinimize();
+        }
+    });
 });
