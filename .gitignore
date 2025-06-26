@@ -1,2 +1,10 @@
-# Local Netlify folder
+# Environment variables
+.env
+
+# Node modules
+node_modules
+/netlify/functions/node_modules
+/netlify/functions/package-lock.json
+
+# Netlify state
 .netlify

@@ -27,11 +27,19 @@ document.addEventListener('DOMContentLoaded', () => {
                 headers: { 'Content-Type': 'application/json' }
             });
 
-            const data = await response.json();
-
             if (!response.ok) {
-                throw new Error(data.error || 'An unknown error occurred.');
+                const errorText = await response.text();
+                try {
+                    // Try to parse it as JSON
+                    const errorData = JSON.parse(errorText);
+                    throw new Error(errorData.error || 'An unknown error occurred.');
+                } catch (e) {
+                    // If it's not JSON, use the raw text
+                    throw new Error(errorText || 'An unknown error occurred.');
+                }
             }
+
+            const data = await response.json();
 
             if (data.threadId) {
                 threadId = data.threadId;
