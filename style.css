@@ -1,37 +1,46 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+body {
+    font-family: 'Roboto', sans-serif;
+}
+
 #chat-widget {
     position: fixed;
     bottom: 20px;
     right: 20px;
     width: 350px;
     height: 500px;
-    border: 1px solid #ccc;
-    border-radius: 10px;
+    border: none;
+    border-radius: 15px;
     display: flex;
     flex-direction: column;
     overflow: hidden;
-    font-family: sans-serif;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    background-color: #fff;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    background-color: #f8f8f8;
     z-index: 9999;
 }
 
 #chat-header {
-    background-color: #f1f1f1;
+    background-color: #e4002b; /* Extra's primary red */
+    color: white;
     padding: 15px;
-    border-bottom: 1px solid #ccc;
+    border-bottom: 4px solid #ffd100; /* Extra's yellow accent */
+    text-align: center;
 }
 
 #chat-header h3 {
     margin: 0;
-    font-size: 1.1em;
+    font-size: 1.2em;
+    font-weight: 700;
 }
 
 #chat-body {
     flex-grow: 1;
-    padding: 15px;
+    padding: 20px;
     overflow-y: auto;
     display: flex;
     flex-direction: column;
+    background-color: #ffffff;
 }
 
 #chat-messages {
@@ -42,45 +51,59 @@
 
 #chat-messages li {
     margin-bottom: 15px;
-    padding: 10px;
-    border-radius: 5px;
-    max-width: 80%;
+    padding: 12px 15px;
+    border-radius: 18px;
+    max-width: 85%;
+    line-height: 1.4;
 }
 
 #chat-messages .user-message {
-    background-color: #dcf8c6;
+    background-color: #e4002b; /* User messages in brand red */
+    color: white;
     align-self: flex-end;
-    text-align: right;
+    border-bottom-right-radius: 4px;
 }
 
 #chat-messages .assistant-message {
-    background-color: #f1f1f1;
+    background-color: #f0f0f0;
+    color: #333;
     align-self: flex-start;
+    border-bottom-left-radius: 4px;
 }
 
 #chat-footer {
     padding: 15px;
-    border-top: 1px solid #ccc;
+    border-top: 1px solid #e0e0e0;
+    background-color: #f8f8f8;
     display: flex;
+    align-items: center;
 }
 
 #chat-input {
     flex-grow: 1;
-    border: 1px solid #ccc;
-    padding: 10px;
-    border-radius: 5px;
+    border: 2px solid #ddd;
+    padding: 12px;
+    border-radius: 20px;
+    font-size: 1em;
+}
+
+#chat-input:focus {
+    outline: none;
+    border-color: #e4002b;
 }
 
 #chat-send {
     border: none;
-    background-color: #4CAF50;
-    color: white;
-    padding: 10px 15px;
+    background-color: #ffd100; /* Yellow accent for the send button */
+    color: #333;
+    font-weight: bold;
+    padding: 12px 20px;
     margin-left: 10px;
-    border-radius: 5px;
+    border-radius: 20px;
     cursor: pointer;
+    transition: background-color 0.3s;
 }
 
 #chat-send:hover {
-    background-color: #45a049;
+    background-color: #fcc200;
 }

@@ -51,5 +51,5 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    addMessage("Hello! How can I help you today?", "assistant");
+    addMessage("Hei, gi meg postnummeret ditt så kan jeg hjelpe meg med tips, triks og tilbud :)", "assistant");
 });
